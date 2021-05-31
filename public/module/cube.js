@@ -155,7 +155,7 @@ class RubikCube{
         this.up_fix_left  = false;
 
         this.rotateAngle = 0.0;
-        this.rotateSpeed = 89.0;
+        this.rotateSpeed = 4.0;
     }
 
     add_black(){
