@@ -60,7 +60,7 @@ class commandControler{
             console.log(Command.commandfile.length);
             if (Command.commandfile.length == 1) {
                 // print_color();
-                Command.processMutex = false;
+                // Command.processMutex = false;
                 // noLoop();
             } else if (Command.commandfile.length != 0 && Command.commandfile.length != 1){
                 Command.command = Command.commandfile[0];
