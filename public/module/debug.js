@@ -19,5 +19,5 @@ class debugTemplate{
         text("Y", 0, 300);
         text("X", 300, 0);
         // text("Z", 0, 0, 300);
-    }
+    } 
 }

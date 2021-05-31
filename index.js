@@ -1,9 +1,13 @@
 const express = require('express')
-const fs = require('fs')
+const bodyParser = require('body-parser')
+const multiparty = require('multiparty');
+const fs = require('fs');
+const { argv } = require('process');
 const app = express()
 const port = 3000
 
 app.use('/public', express.static(__dirname+"/public"));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname+"/index.html");
@@ -20,6 +24,28 @@ app.get("/clearcommand", (req,res) => {
     console.log("clear command.txt");
     deleteCommand();
 });
+
+var end = false;
+app.post("/printcolor", (req,res)=>{
+    let form = new multiparty.Form();
+
+    if(end==false){
+        form.parse(req, function (err, fields, files) {
+            Object.keys(fields).forEach(function (name) {
+                console.log(name);
+                appendCommand(name);
+            });
+        });
+        end = true;
+    }
+
+    console.log("here");
+
+    var filename = "./public/" + String(process.argv[2] + ".txt");
+    var lines = require('fs').readFileSync(filename, 'utf-8')
+        .split('\n')
+        .filter(Boolean);
+})
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
@@ -67,6 +93,19 @@ function appendCommand(a) {
         }
     });
     fs.appendFileSync("./public/command.txt", "\n", function (err) {
+        if (err) {
+            console.log("Error of index.js: appendCommand");
+        }
+    });
+}
+
+function resultTofile(){
+    fs.appendFileSync("./public/0.txt", a, function (err) {
+        if (err) {
+            console.log("Error of index.js: appendCommnad");
+        }
+    });
+    fs.appendFileSync("./public/0.txt", "\n", function (err) {
         if (err) {
             console.log("Error of index.js: appendCommand");
         }

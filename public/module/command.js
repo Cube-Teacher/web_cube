@@ -57,10 +57,12 @@ class commandControler{
     read(){
         Command.commandfile = [];
         Command.commandfile = loadStrings("/public/command.txt", function(){
-            // console.log(Command.commandfile);
-            if (Command.commandfile.length <= 1) {
-                Command.processMutex = true;
-            } else {
+            console.log(Command.commandfile.length);
+            if (Command.commandfile.length == 1) {
+                // print_color();
+                Command.processMutex = false;
+                // noLoop();
+            } else if (Command.commandfile.length != 0 && Command.commandfile.length != 1){
                 Command.command = Command.commandfile[0];
                 Command.processMutex = false;
                 console.log("Read command: " + String(Command.command));
@@ -195,3 +197,53 @@ function delete_command(){
     xhttp.send();
 }
 
+function print_color() {
+    console.log("IN");
+    var data = new FormData();
+    var xhttp = new XMLHttpRequest();
+
+    for (var m = 0; m < 3; m++) {
+        for (var n = 0; n < 3; n++) {
+            data.append(Cube.cubebox[n][0][m].up,"nothing");
+        }
+    }
+
+    for (var m = 0; m < 3; m++) {
+        for (var n = 0; n < 3; n++) {
+            data.append(Cube.cubebox[0][m][n].left, "nothing");
+        }
+    }
+
+    for (var m = 0; m < 3; m++) {
+        for (var n = 0; n < 3; n++) {
+            data.append(Cube.cubebox[n][m][2].front, "nothing");
+        }
+    }
+
+    for (var m = 0; m < 3; m++) {
+        for (var n = 2; n >= 0; n--) {
+            data.append(Cube.cubebox[2][m][n].right, "nothing");
+        }
+    }
+
+    for (var m = 0; m < 3; m++) {
+        for (var n = 2; n >= 0; n--) {
+            data.append(Cube.cubebox[n][m][0].back, "nothing");
+        }
+    }
+
+    for (var m = 2; m >= 0; m--) {
+        for (var n = 0; n < 3; n++) {
+            data.append(Cube.cubebox[n][2][m].down, "nothing");
+        }
+    }
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+        }
+    };
+
+    xhttp.open("POST", "/printcolor", true);
+    xhttp.send(data);
+}
