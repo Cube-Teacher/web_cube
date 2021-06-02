@@ -10,68 +10,67 @@ class boxTemplate{
         this.lineThickness = sideLinethickness;
     }
 
-    createBox(){
+    createBox(p){
 
-        strokeWeight(this.lineThickness);
+        p.strokeWeight(this.lineThickness);
         var len = this.len;
 
-        fill(draw_color(this.up));
-        
+        p.fill(draw_color(this.up));
 
         // TOP
-        beginShape();
-        vertex(-len, -len, -len);
-        vertex(len, -len, -len);
-        vertex(len, -len, len);
-        vertex(-len, -len, len);
-        endShape(CLOSE);
+        p.beginShape();
+        p.vertex(-len, -len, -len);
+        p.vertex(len, -len, -len);
+        p.vertex(len, -len, len);
+        p.vertex(-len, -len, len);
+        p.endShape(p.CLOSE);
 
         // // DOWN
-        fill(draw_color(this.down));
-        beginShape();
-        vertex(-len, len, -len);
-        vertex(len, len, -len);
-        vertex(len, len, len);
-        vertex(-len, len, len);
-        endShape(CLOSE);
+        p.fill(draw_color(this.down));
+        p.beginShape();
+        p.vertex(-len, len, -len);
+        p.vertex(len, len, -len);
+        p.vertex(len, len, len);
+        p.vertex(-len, len, len);
+        p.endShape(p.CLOSE);
 
         // 
-        fill(draw_color(this.right));
-        beginShape();
-        vertex(len, -len, -len);
-        vertex(len, -len, len);
-        vertex(len, len, len);
-        vertex(len, len, -len);
-        endShape(CLOSE);
+        p.fill(draw_color(this.right));
+        p.beginShape();
+        p.vertex(len, -len, -len);
+        p.vertex(len, -len, len);
+        p.vertex(len, len, len);
+        p.vertex(len, len, -len);
+        p.endShape(p.CLOSE);
 
         // 
-        fill(draw_color(this.left));
-        beginShape();
-        vertex(-len, -len, -len);
-        vertex(-len, -len, len);
-        vertex(-len, len, len);
-        vertex(-len, len, -len);
-        endShape(CLOSE);
+        p.fill(draw_color(this.left));
+        p.beginShape();
+        p.vertex(-len, -len, -len);
+        p.vertex(-len, -len, len);
+        p.vertex(-len, len, len);
+        p.vertex(-len, len, -len);
+        p.endShape(p.CLOSE);
 
         // 
-        fill(draw_color(this.back));
-        beginShape();
-        vertex(len, -len, -len);
-        vertex(-len, -len, -len);
-        vertex(-len, len, -len);
-        vertex(len, len, -len);
-        endShape(CLOSE);
+        p.fill(draw_color(this.back));
+        p.beginShape();
+        p.vertex(len, -len, -len);
+        p.vertex(-len, -len, -len);
+        p.vertex(-len, len, -len);
+        p.vertex(len, len, -len);
+        p.endShape(p.CLOSE);
 
         // 
-        beginShape();
-        fill(draw_color(this.front));
-        vertex(len, -len, len);
-        vertex(-len, -len, len);
-        vertex(-len, len, len);
-        vertex(len, len, len);
-        endShape(CLOSE);
+        p.beginShape();
+        p.fill(draw_color(this.front));
+        p.vertex(len, -len, len);
+        p.vertex(-len, -len, len);
+        p.vertex(-len, len, len);
+        p.vertex(len, len, len);
+        p.endShape(p.CLOSE);
 
-        strokeWeight(1);
+        p.strokeWeight(1);
     }
 }
 
@@ -155,7 +154,7 @@ class RubikCube{
         this.up_fix_left  = false;
 
         this.rotateAngle = 0.0;
-        this.rotateSpeed = 4.0;
+        this.rotateSpeed = 3.0;
     }
 
     add_black(){
@@ -197,9 +196,9 @@ class RubikCube{
         }
     }
 
-    init(){
-        var tmp_init = loadStrings("/public/init.txt", function(){
-            if(tmp_init.length==54){        
+    init(p, Cube){
+        var tmp_init = p.loadStrings("/public/init.txt", function(){
+            if(tmp_init.length==55){        
                 console.log("Init Cube");
                 for (var i = 0; i < 3; i++){
                     for(var j = 0; j < 3; j++) {
@@ -234,6 +233,17 @@ class RubikCube{
                 delete_Init();
             }
         });
+    }
+
+    rotate(Cube, Command) {
+        // console.log("let rotate");
+        if (Command.index < Command.commandfile.length - 1) {
+            console.log(Command.index);
+            Command.command = Command.commandfile[Command.index];
+            Command.index += 1;
+            Command.processMutex = false;
+            Command.enable(Cube, Command.command);
+        }
     }
 
     Updateright(idx){
@@ -418,17 +428,17 @@ class RubikCube{
     Update_Counterclockwise_down2(){ this.Update_Counterclockwise_up2(); }
     Update_Counterclockwise_down3(){ this.Update_Counterclockwise_up1(); }
 
-    updateHandler(){
+    updateHandler(Cube, Command){
         Cube.rotateAngle += Cube.rotateSpeed;
         if (Cube.rotateAngle > 90) {
-            Cube.update();
+            Cube.update(Cube, Command);
             Cube.rotateAngle = 0.0;
             Command.processMutex = true;
-            Command.clear();
+            Command.clear(Cube, Command);
         }
     }
 
-    update(){
+    update(Cube, Command){
         if (Command.command == ("up_right")) {
             Cube.Updatefront1();
             Cube.Updatefront2();

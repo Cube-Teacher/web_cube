@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const multiparty = require('multiparty');
 const fs = require('fs');
 const { argv } = require('process');
+const { RSA_NO_PADDING } = require('constants');
 const app = express()
 const port = 3000
 
@@ -25,30 +26,30 @@ app.get("/clearcommand", (req,res) => {
     deleteCommand();
 });
 
-var end = false;
-app.post("/printcolor", (req,res)=>{
-    let form = new multiparty.Form();
+// var end = false;
+// app.post("/printcolor", (req,res)=>{
+//     let form = new multiparty.Form();
 
-    if(end==false){
-        form.parse(req, function (err, fields, files) {
-            Object.keys(fields).forEach(function (name) {
-                console.log(name);
-                appendCommand(name);
-            });
-        });
-        end = true;
-    }
+//     if(end==false){
+//         form.parse(req, function (err, fields, files) {
+//             Object.keys(fields).forEach(function (name) {
+//                 console.log(name);
+//                 appendCommand(name);
+//             });
+//         });
+//         end = true;
+//     }
 
-    console.log("here");
+//     console.log("here");
 
-    var filename = "./public/" + String(process.argv[2] + ".txt");
-    var lines = require('fs').readFileSync(filename, 'utf-8')
-        .split('\n')
-        .filter(Boolean);
-})
+//     var filename = "./public/" + String(process.argv[2] + ".txt");
+//     var lines = require('fs').readFileSync(filename, 'utf-8')
+//         .split('\n')
+//         .filter(Boolean);
+// })
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`listening at http://localhost:${port}`);
 });
 
 function deleteInit(){
@@ -99,15 +100,3 @@ function appendCommand(a) {
     });
 }
 
-function resultTofile(){
-    fs.appendFileSync("./public/0.txt", a, function (err) {
-        if (err) {
-            console.log("Error of index.js: appendCommnad");
-        }
-    });
-    fs.appendFileSync("./public/0.txt", "\n", function (err) {
-        if (err) {
-            console.log("Error of index.js: appendCommand");
-        }
-    });
-}

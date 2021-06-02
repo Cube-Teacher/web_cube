@@ -1,13 +1,14 @@
 class commandControler{
 
     constructor() {
-        this.commandfile            ;
+        this.commandfile    = []    ;
         this.command                ;
+        this.index          = 0     ;
         this.fileMutex      = false ;
         this.processMutex   = true  ;
     }
 
-    disable(){
+    disable(Cube){
         Cube.back1_clockwise = false;
         Cube.back2_clockwise = false;
         Cube.back3_clockwise = false;
@@ -54,34 +55,27 @@ class commandControler{
         Cube.up_fix_left = false;
     }
 
-    read(){
-        Command.commandfile = [];
-        Command.commandfile = loadStrings("/public/command.txt", function(){
-            console.log(Command.commandfile.length);
-            if (Command.commandfile.length == 1) {
-                // print_color();
-                // Command.processMutex = false;
-                // noLoop();
-            } else if (Command.commandfile.length != 0 && Command.commandfile.length != 1){
-                Command.command = Command.commandfile[0];
-                Command.processMutex = false;
-                console.log("Read command: " + String(Command.command));
-                Command.enable(Command.command);
+    read(p, Cube, Command){
+        var commandfile = p.loadStrings("./public/command.txt", function(){
+            // console.log(commandfile.length);
+            if (commandfile.length > 1){
+                Command.commandfile = commandfile;
+                // console.log("Read command: " + String(Command.command));
+                // Command.enable(Cube, Command.command);
             }
         });
     }
 
-    clear(){
-        this.command = "";
-        delete_command();
-        this.disable();
+    clear(Cube, Command){
+        Command.command = "";
+        // delete_command();
+        Command.disable(Cube);
     }
 
-    enable(commandstr){
+    enable(Cube, commandstr){
         console.log(commandstr);
         if (commandstr == "back1_clockwise") {
             Cube.back1_clockwise = true;
-
         } else if (commandstr == "back2_clockwise") {
             Cube.back2_clockwise = true;
         } else if (commandstr == "back3_clockwise") {
