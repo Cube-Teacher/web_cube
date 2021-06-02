@@ -1,5 +1,18 @@
 # web_cube
 
+## install
+
+1. clone this repo and change dir to this repo
+2. ```pi@raspberrypi:~/web_cube $ ./install.sh```
+3. ```pi@raspberrypi:~/web_cube $ npm install```
+
+## execute
+
+1. check your ip first, and assure network id of your device is the same with lan.
+2. ```pi@raspberrypi:~/web_cube $ node index.js``` 
+3. open the browser on your device and input: ```<ip>:3000```
+4. Enjoy it😁️
+
 ## library
 
 1. p5.js
@@ -8,22 +21,3 @@
 ## ref
 
 [beacon](https://www.pigo.idv.tw/archives/3088)
-
-## error list
-
-* p5.easycam:
-    ```
-    Uncaught TypeError: renderer.camera is not a function
-    at EasyCam.apply (p5.easycam.js:608)
-    at EasyCam.update (p5.easycam.js:591)
-    at p5.easycam.js:429
-    at callMethod (p5.js:55140)
-    at Array.forEach (<anonymous>)
-    at p5.redraw (p5.js:55148)
-    at p5.<anonymous> (p5.js:48840)
-    at p5.<anonymous> (p5.js:48742)
-    at new p5 (p5.js:49029)
-    at _globalInit (p5.js:48414)
-    ```
-    
-    * solution by author [here](https://github.com/diwi/p5.EasyCam/issues/5)
